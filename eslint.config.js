@@ -29,11 +29,13 @@ export default [
       ...react.configs["jsx-runtime"].rules,
       ...reactHooks.configs.recommended.rules,
       "react/jsx-no-target-blank": "off",
+      "react/prop-types": "off",
       "react-refresh/only-export-components": [
         "warn",
         { allowConstantExport: true },
       ],
+      // Add or modify the no-unused-vars rule
+      "no-unused-vars": "warn", // This ensures unused variables are a warning
     },
-    "no-unused-vars": "warn", // This ensures unused variables are a warning
   },
 ];
