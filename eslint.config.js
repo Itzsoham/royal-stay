@@ -34,8 +34,16 @@ export default [
         "warn",
         { allowConstantExport: true },
       ],
-      // Add or modify the no-unused-vars rule
-      "no-unused-vars": "warn", // This ensures unused variables are a warning
+      "no-unused-vars": "warn", // For warning unused variables
+      // Disable the props spreading warning
+      "react/jsx-props-no-spreading": "off",
+      // Disable warnings for styled-components unknown props
+      "react/forbid-component-props": [
+        "error",
+        {
+          forbid: ["variations", "sizes"], // Add the props you want to ignore
+        },
+      ],
     },
   },
 ];
