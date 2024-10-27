@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 const StyledTable = styled.div`
   border: 1px solid var(--color-grey-200);
-
   font-size: 1.4rem;
   background-color: var(--color-grey-0);
   border-radius: 7px;
@@ -12,7 +11,8 @@ const StyledTable = styled.div`
 
 const CommonRow = styled.div`
   display: grid;
-  grid-template-columns: ${(props) => props.columns};
+  /* Check if grid-template-columns is correctly applied */
+  grid-template-columns: ${(props) => props.$columns || "1fr 1fr"};
   column-gap: 2.4rem;
   align-items: center;
   transition: none;
@@ -20,7 +20,6 @@ const CommonRow = styled.div`
 
 const StyledHeader = styled(CommonRow)`
   padding: 1.6rem 2.4rem;
-
   background-color: var(--color-grey-50);
   border-bottom: 1px solid var(--color-grey-100);
   text-transform: uppercase;
@@ -31,7 +30,6 @@ const StyledHeader = styled(CommonRow)`
 
 const StyledRow = styled(CommonRow)`
   padding: 1.2rem 2.4rem;
-
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
   }
@@ -47,7 +45,6 @@ const Footer = styled.footer`
   justify-content: center;
   padding: 1.2rem;
 
-  /* This will hide the footer when it contains no child elements. Possible thanks to the parent selector :has 🎉 */
   &:not(:has(*)) {
     display: none;
   }
@@ -64,35 +61,38 @@ const TableContext = createContext();
 
 function Table({ columns, children }) {
   return (
-    <TableContext.Provider value={{ columns }}>
+    <TableContext.Provider value={{ $columns: columns }}>
       <StyledTable role="table">{children}</StyledTable>
     </TableContext.Provider>
   );
 }
 
 function Header({ children }) {
-  const { columns } = useContext(TableContext);
+  const { $columns } = useContext(TableContext);
 
   return (
-    <StyledHeader role="row" columns={columns}>
+    <StyledHeader role="row" $columns={$columns}>
       {children}
     </StyledHeader>
   );
 }
+
 function Row({ children }) {
-  const { columns } = useContext(TableContext);
+  const { $columns } = useContext(TableContext);
 
   return (
-    <StyledRow role="row" columns={columns}>
+    <StyledRow role="row" $columns={$columns}>
       {children}
     </StyledRow>
   );
 }
+
 function Body({ data, render }) {
   if (!data.length) return <Empty>There is no data at the moment</Empty>;
 
   return <StyledBody>{data.map(render)}</StyledBody>;
 }
+
 Table.Header = Header;
 Table.Row = Row;
 Table.Body = Body;

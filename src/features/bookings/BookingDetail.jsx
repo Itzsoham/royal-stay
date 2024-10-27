@@ -1,4 +1,9 @@
 import styled from "styled-components";
+import { useMoveBack } from "../../hooks/useMoveBack";
+import { useNavigate } from "react-router-dom";
+import { useBooking } from "./useBooking";
+import { useCheckingOut } from "../check-in-out/useCheckingOut";
+import { useDeleteBooking } from "./useDeleteBooking";
 
 import BookingDataBox from "./BookingDataBox";
 import Row from "../../ui/Row";
@@ -7,8 +12,9 @@ import Tag from "../../ui/Tag";
 import ButtonGroup from "../../ui/ButtonGroup";
 import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
-
-import { useMoveBack } from "../../hooks/useMoveBack";
+import Spinner from "../../ui/Spinner";
+import Modal from "../../ui/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -17,10 +23,15 @@ const HeadingGroup = styled.div`
 `;
 
 function BookingDetail() {
-  const booking = {};
-  const status = "checked-in";
-
+  const { isLoading, booking } = useBooking();
+  const { isCheckingOut, checkout } = useCheckingOut();
+  const { isDeleting, deleteBooking } = useDeleteBooking();
   const moveBack = useMoveBack();
+  const navigate = useNavigate();
+
+  if (isLoading) return <Spinner />;
+
+  const { status, id: bookingId } = booking;
 
   const statusToTagName = {
     unconfirmed: "blue",
@@ -32,7 +43,7 @@ function BookingDetail() {
     <>
       <Row type="horizontal">
         <HeadingGroup>
-          <Heading as="h1">Booking #X</Heading>
+          <Heading as="h1">Booking #{bookingId}</Heading>
           <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
         </HeadingGroup>
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
@@ -41,7 +52,32 @@ function BookingDetail() {
       <BookingDataBox booking={booking} />
 
       <ButtonGroup>
-        <Button variation="secondary" onClick={moveBack}>
+        {status === "unconfirmed" && (
+          <Button onClick={() => navigate(`/checkin/${bookingId}`)}>
+            Check in
+          </Button>
+        )}
+        {status === "checked-in" && (
+          <Button onClick={() => checkout(bookingId)} disabled={isCheckingOut}>
+            Check out
+          </Button>
+        )}
+        <Modal>
+          <Modal.Open opens="delete">
+            <Button $variation="danger">Delete Booking</Button>
+          </Modal.Open>
+
+          <Modal.Window name="delete">
+            <ConfirmDelete
+              resourceName="booking"
+              disabled={isDeleting}
+              onConfirm={() =>
+                deleteBooking(bookingId, { onSettled: moveBack })
+              }
+            />
+          </Modal.Window>
+        </Modal>
+        <Button $variation="secondary" onClick={moveBack}>
           Back
         </Button>
       </ButtonGroup>
