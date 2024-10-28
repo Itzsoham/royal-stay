@@ -49,7 +49,7 @@ const Discount = styled.div`
 `;
 
 function CabinRow({ cabin }) {
-  const { creatingCabin, isCreating } = useCreateCabin();
+  const { creatingCabin } = useCreateCabin();
   const { isDeleting, deleteCabin } = useDeleteCabin();
 
   const { name, image, maxCapacity, regularPrice, id, discount, description } =

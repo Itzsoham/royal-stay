@@ -14,7 +14,7 @@ export function useLogin() {
         password,
       }),
     onSuccess: (user) => {
-      queryClient.setQueryData("user", user.user);
+      queryClient.setQueryData(["user"], user.user); // Ensure queryKey is an array
       navigate("/dashboard", { replace: true });
     },
     onError: (error) => {

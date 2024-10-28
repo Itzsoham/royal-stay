@@ -7,6 +7,7 @@ import { subtractDates } from "../utils/helpers";
 import { bookings } from "./data-bookings";
 import { cabins } from "./data-cabins";
 import { guests } from "./data-guests";
+import { useDarkMode } from "../contexts/DarkModeContext";
 
 // const originalSettings = {
 //   minBookingLength: 3,
@@ -125,11 +126,16 @@ function Uploader() {
     setIsLoading(false);
   }
 
+  const { isDarkMode } = useDarkMode();
+
+  const bgColor = isDarkMode ? "#1a202e" : "#e0e7ff";
+
   return (
     <div
       style={{
+        backgroundColor: { bgColor },
+        opacity: 0.8,
         marginTop: "auto",
-        backgroundColor: "#e0e7ff",
         padding: "8px",
         borderRadius: "5px",
         textAlign: "center",
