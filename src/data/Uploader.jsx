@@ -126,6 +126,10 @@ function Uploader() {
     setIsLoading(false);
   }
 
+  function visitWebsite() {
+    window.open("https://royal-stay.vercel.app/", "_blank");
+  }
+
   const { isDarkMode } = useDarkMode();
 
   const bgColor = isDarkMode ? "#1a202e" : "#e0e7ff";
@@ -145,13 +149,14 @@ function Uploader() {
       }}
     >
       <h3>SAMPLE DATA</h3>
-
       <Button onClick={uploadAll} disabled={isLoading}>
         Upload ALL
       </Button>
-
       <Button onClick={uploadBookings} disabled={isLoading}>
         Upload bookings ONLY
+      </Button>
+      <Button onClick={visitWebsite} disabled={isLoading}>
+        Visit the website
       </Button>
     </div>
   );
