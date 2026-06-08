@@ -1,8 +1,11 @@
 import styled from "styled-components";
-import { useUser } from "../features/authentication/useUser";
+import {
+  SignedIn,
+  SignedOut,
+  AuthLoading,
+  RedirectToSignIn,
+} from "@neondatabase/auth-ui";
 import Spinner from "./Spinner";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 const FullPage = styled.div`
   height: 100vh;
@@ -13,29 +16,26 @@ const FullPage = styled.div`
   align-items: center;
 `;
 
+// Neon Auth state machine:
+//  - while resolving the session -> spinner
+//  - signed in  -> render the app
+//  - signed out -> redirect to /auth/sign-in (RedirectToSignIn uses our router)
 function ProtectedRoute({ children }) {
-  const navigate = useNavigate();
-  // 1> Get authenticated user
-  const { isLoading, isAuthenticated } = useUser();
+  return (
+    <>
+      <AuthLoading>
+        <FullPage>
+          <Spinner />
+        </FullPage>
+      </AuthLoading>
 
-  // 2> if user is not authenticated, redirect to login page
-  useEffect(() => {
-    if (!isAuthenticated && !isLoading) {
-      navigate("/login");
-    }
-  }, [isAuthenticated, isLoading, navigate]);
+      <SignedIn>{children}</SignedIn>
 
-  // 3> while loading show the spinner
-  if (isLoading)
-    return (
-      <FullPage>
-        <Spinner />
-      </FullPage>
-    );
-
-  // 4> if user is authenticated, render the App
-
-  if (isAuthenticated) return children;
+      <SignedOut>
+        <RedirectToSignIn />
+      </SignedOut>
+    </>
+  );
 }
 
 export default ProtectedRoute;

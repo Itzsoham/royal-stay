@@ -12,7 +12,6 @@ const StyledUserAvatar = styled.div`
 
 const Avatar = styled.img`
   display: block;
-  width: 4rem;
   width: 3.6rem;
   aspect-ratio: 1;
   object-fit: cover;
@@ -23,15 +22,15 @@ const Avatar = styled.img`
 
 function UserAvatar() {
   const { user } = useUser();
-  const { fullName, avatar } = user.user_metadata;
+
+  // Better Auth user shape: { name, email, image, ... }
+  const name = user?.name || user?.email || "User";
+  const avatar = user?.image;
 
   return (
     <StyledUserAvatar>
-      <Avatar
-        src={avatar || "default-user.jpg"}
-        alt={`Avatar of ${fullName}`}
-      />
-      <span>{fullName}</span>
+      <Avatar src={avatar || "default-user.jpg"} alt={`Avatar of ${name}`} />
+      <span>{name}</span>
     </StyledUserAvatar>
   );
 }

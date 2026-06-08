@@ -1,15 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import { getCurrentUser } from "../../services/apiAuth";
+import { neon } from "../../services/neon";
 
 export function useUser() {
-  const { isLoading, data: user } = useQuery({
-    queryKey: ["user"],
-    queryFn: getCurrentUser,
-  });
+  // Neon Auth (Better Auth) reactive session hook.
+  const session = neon.auth.useSession();
 
   return {
-    isLoading,
-    user,
-    isAuthenticated: user?.role === "authenticated",
+    isLoading: session.isPending,
+    user: session.data?.user,
+    isAuthenticated: Boolean(session.data?.user),
   };
 }

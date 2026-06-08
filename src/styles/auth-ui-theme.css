@@ -1,0 +1,61 @@
+/*
+ * Royal Stay brand theme for the Neon Auth UI (better-auth-ui).
+ * These unlayered :root / .dark overrides beat auth-ui's @layer defaults,
+ * mapping its design tokens onto the app's indigo brand + grey palette.
+ * Values are OKLCH (the library mixes/opacities them, so avoid hex here).
+ * Light/dark is driven by the `dark` class (next-themes), synced to the app.
+ */
+
+:root {
+  --radius: 0.75rem;
+
+  /* Brand — indigo-600 (#4f46e5) */
+  --primary: oklch(0.511 0.262 277);
+  --primary-foreground: oklch(0.985 0.006 277);
+  --ring: oklch(0.511 0.262 277);
+
+  /* Surfaces / text (light) */
+  --background: oklch(0.985 0.002 247);
+  --foreground: oklch(0.372 0.026 257);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.372 0.026 257);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.372 0.026 257);
+
+  --muted: oklch(0.968 0.003 247);
+  --muted-foreground: oklch(0.551 0.02 257);
+  --secondary: oklch(0.968 0.003 247);
+  --secondary-foreground: oklch(0.372 0.026 257);
+  --accent: oklch(0.962 0.018 277);
+  --accent-foreground: oklch(0.45 0.2 277);
+
+  --border: oklch(0.922 0.004 247);
+  --input: oklch(0.922 0.004 247);
+  --destructive: oklch(0.58 0.22 27);
+}
+
+.dark {
+  /* Brand — indigo-500 (#6366f1), brighter for dark surfaces */
+  --primary: oklch(0.585 0.233 277);
+  --primary-foreground: oklch(0.985 0.006 277);
+  --ring: oklch(0.585 0.233 277);
+
+  /* Surfaces / text (dark) — matches the app's dark greys */
+  --background: oklch(0.21 0.03 257);
+  --foreground: oklch(0.922 0.01 247);
+  --card: oklch(0.255 0.03 257);
+  --card-foreground: oklch(0.922 0.01 247);
+  --popover: oklch(0.255 0.03 257);
+  --popover-foreground: oklch(0.922 0.01 247);
+
+  --muted: oklch(0.285 0.03 257);
+  --muted-foreground: oklch(0.72 0.02 257);
+  --secondary: oklch(0.285 0.03 257);
+  --secondary-foreground: oklch(0.922 0.01 247);
+  --accent: oklch(0.32 0.08 277);
+  --accent-foreground: oklch(0.9 0.04 277);
+
+  --border: oklch(0.32 0.02 257);
+  --input: oklch(0.34 0.02 257);
+  --destructive: oklch(0.7 0.19 22);
+}
