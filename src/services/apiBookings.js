@@ -1,9 +1,9 @@
 import { PAGE_SIZE } from "../utils/constants";
 import { getToday } from "../utils/helpers";
-import supabase from "./supabase";
+import { neon } from "./neon";
 
 export async function getBookings({ filter, sort, page }) {
-  let query = supabase
+  let query = neon
     .from("bookings")
     .select(
       "id,created_at,startDate,endDate,numNights,numGuests,status,totalPrice,cabins(name),guests(fullName,email)",
@@ -38,7 +38,7 @@ export async function getBookings({ filter, sort, page }) {
 }
 
 export async function getBooking(id) {
-  const { data, error } = await supabase
+  const { data, error } = await neon
     .from("bookings")
     .select("*, cabins(*), guests(*)")
     .eq("id", id)
@@ -55,7 +55,7 @@ export async function getBooking(id) {
 // Returns all BOOKINGS that are were created after the given date. Useful to get bookings created in the last 30 days, for example.
 // date : ISO String
 export async function getBookingsAfterDate(date) {
-  const { data, error } = await supabase
+  const { data, error } = await neon
     .from("bookings")
     .select("created_at, totalPrice, extrasPrice")
     .gte("created_at", date)
@@ -71,7 +71,7 @@ export async function getBookingsAfterDate(date) {
 
 // Returns all STAYS that are were created after the given date
 export async function getStaysAfterDate(date) {
-  const { data, error } = await supabase
+  const { data, error } = await neon
     .from("bookings")
     .select("*, guests(fullName)")
     .gte("startDate", date)
@@ -87,7 +87,7 @@ export async function getStaysAfterDate(date) {
 
 // Activity means that there is a check in or a check out today
 export async function getStaysTodayActivity() {
-  const { data, error } = await supabase
+  const { data, error } = await neon
     .from("bookings")
     .select("*, guests(fullName, nationality, countryFlag)")
     .or(
@@ -107,7 +107,7 @@ export async function getStaysTodayActivity() {
 }
 
 export async function updateBooking(id, obj) {
-  const { data, error } = await supabase
+  const { data, error } = await neon
     .from("bookings")
     .update(obj)
     .eq("id", id)
@@ -123,7 +123,7 @@ export async function updateBooking(id, obj) {
 
 export async function deleteBooking(id) {
   // REMEMBER RLS POLICIES
-  const { data, error } = await supabase.from("bookings").delete().eq("id", id);
+  const { data, error } = await neon.from("bookings").delete().eq("id", id);
 
   if (error) {
     console.error(error);
