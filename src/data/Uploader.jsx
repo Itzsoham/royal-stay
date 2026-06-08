@@ -1,13 +1,13 @@
 import { useState } from "react";
+import styled from "styled-components";
 import { isFuture, isPast, isToday } from "date-fns";
-import supabase from "../services/supabase";
+import { neon } from "../services/neon";
 import Button from "../ui/Button";
 import { subtractDates } from "../utils/helpers";
 
 import { bookings } from "./data-bookings";
 import { cabins } from "./data-cabins";
 import { guests } from "./data-guests";
-import { useDarkMode } from "../contexts/DarkModeContext";
 
 // const originalSettings = {
 //   minBookingLength: 3,
@@ -17,38 +17,38 @@ import { useDarkMode } from "../contexts/DarkModeContext";
 // };
 
 async function deleteGuests() {
-  const { error } = await supabase.from("guests").delete().gt("id", 0);
+  const { error } = await neon.from("guests").delete().gt("id", 0);
   if (error) console.log(error.message);
 }
 
 async function deleteCabins() {
-  const { error } = await supabase.from("cabins").delete().gt("id", 0);
+  const { error } = await neon.from("cabins").delete().gt("id", 0);
   if (error) console.log(error.message);
 }
 
 async function deleteBookings() {
-  const { error } = await supabase.from("bookings").delete().gt("id", 0);
+  const { error } = await neon.from("bookings").delete().gt("id", 0);
   if (error) console.log(error.message);
 }
 
 async function createGuests() {
-  const { error } = await supabase.from("guests").insert(guests);
+  const { error } = await neon.from("guests").insert(guests);
   if (error) console.log(error.message);
 }
 
 async function createCabins() {
-  const { error } = await supabase.from("cabins").insert(cabins);
+  const { error } = await neon.from("cabins").insert(cabins);
   if (error) console.log(error.message);
 }
 
 async function createBookings() {
   // Bookings need a guestId and a cabinId. We can't tell Supabase IDs for each object, it will calculate them on its own. So it might be different for different people, especially after multiple uploads. Therefore, we need to first get all guestIds and cabinIds, and then replace the original IDs in the booking data with the actual ones from the DB
-  const { data: guestsIds } = await supabase
+  const { data: guestsIds } = await neon
     .from("guests")
     .select("id")
     .order("id");
   const allGuestIds = guestsIds.map((cabin) => cabin.id);
-  const { data: cabinsIds } = await supabase
+  const { data: cabinsIds } = await neon
     .from("cabins")
     .select("id")
     .order("id");
@@ -97,9 +97,39 @@ async function createBookings() {
 
   console.log(finalBookings);
 
-  const { error } = await supabase.from("bookings").insert(finalBookings);
+  const { error } = await neon.from("bookings").insert(finalBookings);
   if (error) console.log(error.message);
 }
+
+const StyledUploader = styled.div`
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 1.6rem;
+  background-color: var(--color-grey-50);
+  border: 1px solid var(--color-grey-100);
+  border-radius: var(--border-radius-md);
+`;
+
+const Title = styled.h3`
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--color-grey-500);
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+
+  & > button {
+    width: 100%;
+  }
+`;
 
 function Uploader() {
   const [isLoading, setIsLoading] = useState(false);
@@ -130,35 +160,31 @@ function Uploader() {
     window.open("https://royal-stay.vercel.app/", "_blank");
   }
 
-  const { isDarkMode } = useDarkMode();
-
-  const bgColor = isDarkMode ? "#1a202e" : "#e0e7ff";
-
   return (
-    <div
-      style={{
-        backgroundColor: { bgColor },
-        opacity: 0.8,
-        marginTop: "auto",
-        padding: "8px",
-        borderRadius: "5px",
-        textAlign: "center",
-        display: "flex",
-        flexDirection: "column",
-        gap: "8px",
-      }}
-    >
-      <h3>SAMPLE DATA</h3>
-      <Button onClick={uploadAll} disabled={isLoading}>
-        Upload ALL
-      </Button>
-      <Button onClick={uploadBookings} disabled={isLoading}>
-        Upload bookings ONLY
-      </Button>
-      <Button onClick={visitWebsite} disabled={isLoading}>
-        Visit the website
-      </Button>
-    </div>
+    <StyledUploader>
+      <Title>Sample data</Title>
+      <Buttons>
+        <Button $size="small" onClick={uploadAll} disabled={isLoading}>
+          Upload all
+        </Button>
+        <Button
+          $size="small"
+          $variation="secondary"
+          onClick={uploadBookings}
+          disabled={isLoading}
+        >
+          Upload bookings only
+        </Button>
+        <Button
+          $size="small"
+          $variation="secondary"
+          onClick={visitWebsite}
+          disabled={isLoading}
+        >
+          Visit the website
+        </Button>
+      </Buttons>
+    </StyledUploader>
   );
 }
 

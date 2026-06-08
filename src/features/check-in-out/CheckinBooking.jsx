@@ -9,7 +9,7 @@ import ButtonText from "../../ui/ButtonText";
 import { useMoveBack } from "../../hooks/useMoveBack";
 import { useBooking } from "../bookings/useBooking";
 import Spinner from "../../ui/Spinner";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Checkbox from "../../ui/Checkbox";
 import { formatCurrency } from "../../utils/helpers";
 import { useCheckingIn } from "./useCheckingIn";
@@ -31,10 +31,15 @@ function CheckinBooking() {
 
   const [confimPaid, setConfirmPaid] = useState(false);
   const [addBreakfast, setAddBreakfast] = useState();
+  const [syncedBookingId, setSyncedBookingId] = useState(null);
 
-  useEffect(() => {
-    setConfirmPaid(booking?.isPaid ?? false);
-  }, [booking]);
+  // Default the "paid" checkbox to the booking's status when it loads/changes,
+  // adjusting state during render instead of in an effect.
+  // See react.dev "You Might Not Need an Effect".
+  if (booking && booking.id !== syncedBookingId) {
+    setSyncedBookingId(booking.id);
+    setConfirmPaid(booking.isPaid ?? false);
+  }
 
   if (isLoading) return <Spinner />;
   const {
