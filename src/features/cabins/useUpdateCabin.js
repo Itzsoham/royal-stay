@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 export function useUpdateCabin() {
   const queryClient = useQueryClient();
 
-  const { mutate: editingCabin, isLoading: isEditing } = useMutation({
+  const { mutate: editingCabin, isPending: isEditing } = useMutation({
     mutationFn: ({ newCabinData, id }) => createEditCabin(newCabinData, id),
     onSuccess: () => {
       toast.success("Cabin successfully edited");
