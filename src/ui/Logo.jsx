@@ -16,7 +16,7 @@ function Logo({ height }) {
     <StyledLogo>
       <Img
         height={height}
-        src={isDarkMode ? "logo-dark.png" : "/logo-light.png"}
+        src={isDarkMode ? "/logo-dark.png" : "/logo-light.png"}
         alt="Logo"
       />
     </StyledLogo>
