@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
@@ -10,18 +10,22 @@ import { useUser } from "./useUser";
 import { useUpdateUser } from "./useUpdateUser";
 
 function UpdateUserDataForm() {
-  // We don't need the loading state, and can immediately use the user data, because we know that it has already been loaded at this point
-  const {
-    user: {
-      email,
-      user_metadata: { fullName: currentFullName },
-    },
-  } = useUser();
+  const { user, isLoading } = useUser();
 
   const { updateUser, isUpdating } = useUpdateUser();
 
+  const email = user?.email ?? "";
+  const currentFullName = user?.name ?? "";
+
   const [fullName, setFullName] = useState(currentFullName);
   const [avatar, setAvatar] = useState(null);
+
+  useEffect(
+    function () {
+      setFullName(currentFullName);
+    },
+    [currentFullName]
+  );
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -32,7 +36,7 @@ function UpdateUserDataForm() {
     updateUser(
       { fullName, avatar },
       {
-        onSettled: () => {
+        onSuccess: () => {
           setAvatar(null);
           e.target.reset();
         },
@@ -44,6 +48,8 @@ function UpdateUserDataForm() {
     setFullName(currentFullName);
     setAvatar(null);
   }
+
+  if (isLoading) return null;
 
   return (
     <Form onSubmit={handleSubmit}>

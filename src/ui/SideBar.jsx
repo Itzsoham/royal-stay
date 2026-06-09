@@ -9,6 +9,8 @@ const StyledSideBar = styled.aside`
   background-color: var(--color-grey-0);
   border-right: 1px solid var(--color-grey-100);
   grid-row: 1/-1;
+  min-height: 0;
+  overflow-y: auto;
 
   display: flex;
   flex-direction: column;

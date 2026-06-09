@@ -103,6 +103,8 @@ async function createBookings() {
 
 const StyledUploader = styled.div`
   margin-top: auto;
+  width: 100%;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -125,9 +127,12 @@ const Buttons = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+  min-width: 0;
 
   & > button {
     width: 100%;
+    min-width: 0;
+    white-space: normal;
   }
 `;
 
