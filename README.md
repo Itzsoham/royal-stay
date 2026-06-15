@@ -10,7 +10,7 @@
     <img src="https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white" alt="react-router" />
     <img src="https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white" alt="styled-components" />
     <img src="https://img.shields.io/badge/React--Query-FF4154?style=for-the-badge&logo=react-query&logoColor=white" alt="react-query" />
-    <img src="https://img.shields.io/badge/Supabase-181818?style=for-the-badge&logoColor=white&logo=supabase&color=47A248" alt="supabase" />
+    <img src="https://img.shields.io/badge/Neon-00E599?style=for-the-badge&logo=neon&logoColor=white" alt="neon" />
   </div>
 
 </div>
@@ -18,12 +18,13 @@
 ## <a name="tech-stack">⚙️ Tech Stack</a>
 
 - Vite
-- React.js
-- Supabase
+- React 19
+- Neon (Data API + Auth)
 - Styled Components
 - React Query
 - React Router
 - React Hook Form
+- Recharts
 
 ## <a name="features">🔋 Features</a>
 
